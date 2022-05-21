@@ -39,6 +39,7 @@ pipeline {
     stage('check version') {
       steps {
         sh '/usr/local/bin/aws --version'
+        sh 'echo ref $ref'
       }
     }
 
