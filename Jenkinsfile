@@ -41,13 +41,7 @@ def isPullRequest() {
   }
 }
 
-def repoConfig = getPipelineRoutes("${payload_pull_request_head_repo_name}")
-def ASSUME_IAM_ROLE = repoConfig('ASSUME_IAM_ROLE')
-def AWS_ACCOUNT_NAME = repoConfig('AWS_ACCOUNT_NAME')
-def AWS_ACCOUNT_NUMBER = repoConfig('AWS_ACCOUNT_NUMBER')
-def AWS_REGION = repoConfig('AWS_REGION')
-def GITHUB_CREDENTIALS = repoConfig('GITHUB_CREDENTIALS')
-def CFN_CREDENTIALS_ID = "aws-id"
+
 
 
 pipeline {
@@ -60,6 +54,13 @@ pipeline {
     stage("Get Application\'s AWS Environment Details") {
       steps {
         script {
+          def repoConfig = getPipelineRoutes("${payload_pull_request_head_repo_name}")
+def ASSUME_IAM_ROLE = repoConfig('ASSUME_IAM_ROLE')
+def AWS_ACCOUNT_NAME = repoConfig('AWS_ACCOUNT_NAME')
+def AWS_ACCOUNT_NUMBER = repoConfig('AWS_ACCOUNT_NUMBER')
+def AWS_REGION = repoConfig('AWS_REGION')
+def GITHUB_CREDENTIALS = repoConfig('GITHUB_CREDENTIALS')
+def CFN_CREDENTIALS_ID = "aws-id"
           echo "GET AWS ACCOUNT NAME AND NUMBER ...."
           echo "AWS ACCOUNT NAME: ${AWS_ACCOUNT_NAME}, AWS ACCOUNT NUMBER: ${AWS_ACCOUNT_NUMBER}"
           echo "GET AWS REGION ...."
