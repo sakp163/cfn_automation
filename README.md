@@ -12,6 +12,9 @@ This `deploy-stack.sh` in scripts folder file can accept four different paramete
 ```
 
 
+
+
+
 - In the delete stage of this `Jenkinsfile` pipeline, the `delete-stack.sh` executed and accepts the name and region of the stack that was created to delete the stack.
 
 ```bash
