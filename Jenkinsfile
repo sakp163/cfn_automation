@@ -69,49 +69,7 @@ pipeline {
       }
     }
 
-    stage('update-stack') {
-      when {
-          equals expected: 'true', actual: isPullRequest()
-      }
-      steps {
-        container('aws-cli') {
-          withCredentials([[
-          $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: "${CFN_CREDENTIALS_ID}", // update the credentail_id
-            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-            git url: "${payload_pull_request_head_repo_html_url}", credentialsId: "${GITHUB_CREDENTIALS}"
-            script {
-              sh "git checkout ${payload_pull_request_head_ref}"
-            }
-            script {
-              FILESET = sh(returnStdout: true, script: "git reflog --name-status -10 cloudformation|grep yaml |awk '{print \$2}' |sort |uniq").trim()
-              echo "MODIFIED FILE FROM THE LAST COMMIT...."
-              echo "${FILESET}"
-            }
-            script {
-              if ( FILESET.isEmpty() ) {
-                echo "No changes found on cfn templates.."
-              } else {
-                FILESET.each { cfn ->
-                  stage(cfn) {
-                    FILE_NAME = (cfn.split("\\/", 2)[1])
-                    STACK_NAME = (FILE_NAME.split("\\.", 2)[0])
-                    echo "STACK_NAME: ${STACK_NAME}"
-                    def stack_status = sh( returnStatus: true, script: "/usr/local/bin/aws cloudformation describe-stacks --region  ${AWS_REGION} --stack-name ${STACK_NAME}")
-                    if ( stack_status == 0 ) {
-                      sh "/usr/local/bin/aws cloudformation validate-template --stack-name ${STACK_NAME} --region  ${AWS_REGION} --template-file ./${cfn}"
-                    } else {
-                      echo "Stack ${STACK_NAME} don\'t exist.. The Jenkins jobs support only update for now. If you add new cfn create manually for the first time.."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    
   // post {
   //   aborted {
   //     slackSend(channel: env.SLACK_CHANNEL, color: '#808080', message: slackMsg('aborted'), tokenCredentialId: env.SLACK_TOKEN_ID)
