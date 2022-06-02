@@ -16,7 +16,7 @@
 
 def getConfig(repo_name){
   config = readYaml file: "./pipelines/config.yaml"
-  return config[repo_name]
+  return config
 }
 
 def getPipelineRoutes(repo_name){
