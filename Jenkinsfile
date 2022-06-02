@@ -45,7 +45,7 @@ def isPullRequest() {
 
 
 pipeline {
-  agent {label 'packer'}
+  agent any
   options {
     timeout(time: 30, unit: 'MINUTES')
   }
