@@ -16,6 +16,8 @@
 
 def getConfig(repo_name, var){
   config = readYaml file: "./pipelines/config.yaml"
+  echo "${config}"
+  echo "${config[repo_name][var]}"
   return config[repo_name][var]
 }
 
