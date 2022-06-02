@@ -1,0 +1,6 @@
+cfn_automation:
+  ASSUME_IAM_ROLE: "role_name"
+  AWS_ACCOUNT_NAME: "abcd"
+  AWS_ACCOUNT_NUMBER: "123456778"
+  AWS_REGION: "us-east-1"
+  GITHUB_CREDENTIALS: "example-cred"
