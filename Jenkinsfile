@@ -39,9 +39,8 @@ pipeline {
     stage('check version') {
       steps {
         sh '/usr/local/bin/aws --version'
-        sh 'echo $payload'
         sh 'echo $env'
-        sh 'echo ${payload.pull_request.head.repo.owner.url}'
+        sh 'echo ${payload_pull_request_head_repo_owner_url}'
       }
     }
 
