@@ -27,7 +27,6 @@
 
 def DEPLOYMENT_ENV = "TEST"
 def CFN_CREDENTIALS_ID = "aws-id"
-def jsonObj = readJSON text: payload
 
 pipeline {
   agent any
@@ -41,8 +40,8 @@ pipeline {
       steps {
         sh '/usr/local/bin/aws --version'
         sh 'echo $payload'
-        sh 'echo $jsonObj'
-        sh 'echo ${jsonObj.payload.pull_request.head.repo.owner.url}'
+        sh 'echo $env'
+        sh 'echo ${payload.pull_request.head.repo.owner.url}'
       }
     }
 
