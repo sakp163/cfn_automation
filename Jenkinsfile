@@ -14,15 +14,14 @@
 //     "*AWS Region:* ${region}"
 // }
 
-def getConfig(repo_name, var){
+def getConfig(repo_name){
   config = readYaml file: "./pipelines/config.yaml"
-  echo "${config}"
-  echo "${config[repo_name][var]}"
-  return config[repo_name][var]
+  echo "${config} values"
+  return config[repo_name]
 }
 
-def getPipelineRoutes(repo_name, var){
-  config = getConfig(repo_name.toLowerCase(), var)
+def getPipelineRoutes(repo_name){
+  config = getConfig(repo_name.toLowerCase())
   if(config != null){
     return config
   } 
@@ -56,8 +55,10 @@ pipeline {
     stage("Get Application\'s AWS Environment Details") {
       steps {
         script {
-          def repoConfig = getPipelineRoutes("${payload_pull_request_head_repo_name}", "ASSUME_IAM_ROLE")
-          sh 'echo $repoConfig'
+          def repoConfig = getPipelineRoutes("${payload_pull_request_head_repo_name}")
+          sh 'echo "${repoConfig}"'
+          def ASSUME_IAM_ROLE = repoConfig['ASSUME_IAM_ROLE']
+          echo "${ASSUME_IAM_ROLE} Assume role value"
         }
       }
     }
