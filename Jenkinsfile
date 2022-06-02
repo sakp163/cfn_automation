@@ -40,6 +40,7 @@ pipeline {
       steps {
         sh '/usr/local/bin/aws --version'
         sh 'echo $payload'
+        sh 'echo env.payload_pull_request_head_repo_owner_url'
       }
     }
 
